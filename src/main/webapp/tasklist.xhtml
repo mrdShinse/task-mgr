@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition template="./template/default.xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+
+        <p:button onclick="#{taskListBean.addTask()}" value="タスク追加"/>
+        <p:button onclick="#{taskListBean.update()}" value="更新"/>
+
+        <p:dataTable id="tasklist-datatable"
+                     value="#{taskListBean.tasks}"
+                     var="task"
+                     editable="true">
+
+            <p:ajax event="rowEdit" listener="#{taskListBean.onRowEdit}" update="@parent" />
+            <p:ajax event="rowEditCancel" listener="#{taskListBean.onRowCancel}" update="@parent" />
+
+            <p:column style="width:32px">
+                <p:rowEditor />
+            </p:column>
+
+            <p:column headerText="ID">
+                <h:outputText value="#{task.id}" />
+            </p:column>
+            <p:column headerText="件名">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{task.content.title}" /></f:facet>
+                    <f:facet name="input"><p:inputText value="#{task.content.title}" label="件名"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+            <p:column headerText="担当者">
+                <h:outputText value="#{task.assigned}" />
+            </p:column>
+            <p:column headerText="状態">
+                <h:outputText value="#{task.status}" />
+            </p:column>
+            <p:column headerText="開始日">
+                <h:outputText value="#{task.startAt}" />
+            </p:column>
+            <p:column headerText="期限日">
+                <h:outputText value="#{task.endUntil}" />
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+
+</ui:composition>
